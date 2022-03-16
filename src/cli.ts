@@ -22,10 +22,16 @@ if (!existsSync(templatePath)) {
   console.log(chalk.red(`no template found at ${templatePath}`));
   process.exit(1);
 }
-let info: Record<string, string> = {
+let info: Record<string, any> = {
   Root: templatePath,
 };
-let meta: any;
+let meta: {
+  insertAt: string;
+  files: string[];
+  postCreationActions?: string[];
+  prompts: Array<prompts.PromptObject>;
+  defaultPlaceholders?: Record<string, any>;
+};
 try {
   meta = require(cwd(`.template/${template}/.meta.json`));
 } catch (e) {
@@ -41,7 +47,7 @@ if (meta.defaultPlaceholders) {
 }
 function fixup(str: string) {
   Object.entries(info).forEach(([key, value]) => {
-    str = str.replace(new RegExp(`\\$${key}`, "g"), value);
+    str = str.replace(new RegExp(`\\$${key}`, "g"), String(value));
   });
   return str;
 }
