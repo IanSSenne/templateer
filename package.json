@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "@types/prompts": "^2.0.14",
+    "chalk": "^5.0.1",
+    "commander": "^9.0.0",
+    "esbuild": "^0.14.27",
+    "path": "^0.12.7",
+    "prompts": "^2.4.2"
+  },
+  "scripts": {
+    "build": "node build.js && node lib/cli.js component"
+  },
+  "bin": {
+    "add-template": "./lib/cli.js"
+  },
+  "name": "fs-add-template",
+  "version": "1.0.0",
+  "main": "lib/cli.js",
+  "license": "MIT"
+}

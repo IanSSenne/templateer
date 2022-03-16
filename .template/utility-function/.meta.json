@@ -1,0 +1,15 @@
+{
+  "insertAt": "dsrc/util",
+  "files": ["$Name.ts"],
+  "postCreationActions": [
+    "node \"$Root/post-create.js\" \"$Target\" \"$Name\""
+  ],
+  "prompts": [
+    {
+      "type": "text",
+      "name": "Name",
+      "message": "What is the name of the utility?"
+    }
+  ],
+  "defaultPlaceholders": {}
+}
