@@ -7,4 +7,4 @@ if (!fs.existsSync(barrelPath)) {
 }
 const barrel = new Set(fs.readFileSync(barrelPath, "utf8").split("\n"));
 barrel.add(`export * from "./${name}/${name}";`);
-fs.writeFileSync(barrelPath, [...barrel].join("\n"));
+fs.writeFileSync(barrelPath, [...barrel].sort().join("\n"));

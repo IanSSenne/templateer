@@ -13,8 +13,11 @@
   "bin": {
     "add-template": "./lib/cli.js"
   },
-  "name": "fs-add-template",
-  "version": "1.0.0",
+  "name": "fb-add-template",
+  "version": "1.0.3",
   "main": "lib/cli.js",
-  "license": "MIT"
+  "license": "MIT",
+  "files": [
+    "./lib/cli.js"
+  ]
 }
