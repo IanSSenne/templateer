@@ -1,6 +1,9 @@
 {
   "insertAt": "dsrc/components/$Name",
-  "files": ["$Name.tsx", "$Name.module.scss"],
+  "fileGroups": {
+    "true": ["$Name.tsx"],
+    "$Styles": ["$Name.module.scss"]
+  },
   "postCreationActions": [
     "node \"$Root/post-create.js\" \"$Target\" \"$Name\""
   ],
@@ -9,6 +12,12 @@
       "type": "text",
       "name": "Name",
       "message": "What is the name of the component?"
+    },
+    {
+      "type": "confirm",
+      "name": "Styles",
+      "message": "Do you want to create a styles file?",
+      "initial": true
     }
   ],
   "defaultPlaceholders": {}

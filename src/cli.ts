@@ -28,7 +28,10 @@ let info: Record<string, any> = {
 };
 let meta: {
   insertAt: string;
-  files: string[];
+  files?: string[];
+  fileGroups?: {
+    [key: string]: string[];
+  };
   postCreationActions?: string[];
   prompts: Array<prompts.PromptObject>;
   defaultPlaceholders?: Record<string, any>;
@@ -61,21 +64,59 @@ prompts(meta.prompts || [], {
   info = { ...info, ...answers };
   info.Target = cwd(fixup(meta.insertAt));
   mkdirSync(info.Target, { recursive: true });
-  for (const file of meta.files) {
-    const name = fixup(file);
-    const target = path.resolve(info.Target, name);
-    mkdirSync(dirname(target), { recursive: true });
-    const source = path.resolve(templatePath, file);
-    writeFileSync(
-      target,
-      ejs.render(
-        readFileSync(source, "utf8"),
-        Object.fromEntries(Object.entries(info).map((_) => ["$" + _[0], _[1]])),
-        {
-          async: false,
-        }
-      )
+  if (meta.files) {
+    for (const file of meta.files) {
+      const name = fixup(file);
+      const target = path.resolve(info.Target, name);
+      mkdirSync(dirname(target), { recursive: true });
+      const source = path.resolve(templatePath, file);
+      writeFileSync(
+        target,
+        ejs.render(
+          readFileSync(source, "utf8"),
+          Object.fromEntries(
+            Object.entries(info).map((_) => ["$" + _[0], _[1]])
+          ),
+          {
+            async: false,
+          }
+        )
+      );
+    }
+  } else if (meta.fileGroups) {
+    let mapped = Object.fromEntries(
+      Object.entries(info).map((_) => ["$" + _[0], _[1]])
     );
+    Object.entries(meta.fileGroups).forEach(([key, files]) => {
+      console.log(`return Boolean(${key});`);
+      const isActive = new Function(
+        ...Object.keys(info).map((_) => "$" + _),
+        `return Boolean(${key});`
+      )(...Object.values(info));
+      if (isActive) {
+        for (const file of files) {
+          const name = fixup(file);
+          const target = path.resolve(info.Target, name);
+          mkdirSync(dirname(target), { recursive: true });
+          const source = path.resolve(templatePath, file);
+          writeFileSync(
+            target,
+            ejs.render(
+              readFileSync(source, "utf8"),
+              Object.fromEntries(
+                Object.entries(info).map((_) => ["$" + _[0], _[1]])
+              ),
+              {
+                async: false,
+              }
+            )
+          );
+        }
+      }
+    });
+  } else {
+    console.log(chalk.red("no files or fileGroups found"));
+    process.exit(1);
   }
   if (meta.postCreationActions) {
     for (const action of meta.postCreationActions) {
