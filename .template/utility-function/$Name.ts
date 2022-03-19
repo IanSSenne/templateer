@@ -1,3 +1,3 @@
-export function $Name() {
+export function <%=$Name%>() {
   throw new Error("Not implemented");
 }

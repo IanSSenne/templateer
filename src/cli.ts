@@ -4,6 +4,7 @@ import { program } from "commander";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import path, { dirname } from "path";
 import prompts from "prompts";
+import ejs from "ejs";
 program
   .version("0.0.1")
   .description("Templateer CLI")
@@ -65,7 +66,16 @@ prompts(meta.prompts || [], {
     const target = path.resolve(info.Target, name);
     mkdirSync(dirname(target), { recursive: true });
     const source = path.resolve(templatePath, file);
-    writeFileSync(target, fixup(readFileSync(source, "utf8")));
+    writeFileSync(
+      target,
+      ejs.render(
+        readFileSync(source, "utf8"),
+        Object.fromEntries(Object.entries(info).map((_) => ["$" + _[0], _[1]])),
+        {
+          async: false,
+        }
+      )
+    );
   }
   if (meta.postCreationActions) {
     for (const action of meta.postCreationActions) {
