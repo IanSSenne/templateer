@@ -1,5 +1,5 @@
 {
-  "dependencies": {
+  "devDependencies": {
     "@types/ejs": "^3.1.0",
     "@types/prompts": "^2.0.14",
     "chalk": "^5.0.1",
@@ -16,7 +16,7 @@
     "add-template": "./lib/cli.js"
   },
   "name": "fb-add-template",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "lib/cli.js",
   "license": "MIT",
   "files": [

@@ -1,5 +1,5 @@
 {
-  "insertAt": "dsrc/util",
+  "insertAt": "exsrc/util",
   "files": ["$Name.ts"],
   "postCreationActions": [
     "node \"$Root/post-create.js\" \"$Target\" \"$Name\""
